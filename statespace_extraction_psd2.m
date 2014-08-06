@@ -7,16 +7,15 @@ iter_loc = 110; %logdata.data(i,iter_loc) : number of state points in the file i
 alpha_loc=69;
 ramp_loc1=1; %ramp_loc2=37;
 path = '/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/';
-date = '2014-08-04';
+date = '2013-09-08';
 session = '.01';
 ear = '1';
-cell = '8';
+cell = '15';
 user = 'JS';
-sessions = ['152628 2';
-'152826 3';
-'153018 4';
-'153158 5';
-'153311 6'];
+sessions = ['163611 2';
+'163737 3';
+'163831 4';
+'163924 5'];
 statespace = '1';
 k_hb = 425e-6;
  

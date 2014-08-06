@@ -1,6 +1,6 @@
 function Tfind
 %Experimental data. All points files%%%%%%%%%%%%%%%%%
-load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-04.01/Ear 1/Cell 4/20140804-cell4.mat');
+load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 13/20140805-cell13.mat');
 
 %Operating points in ascending order
 Fsort = sort(F_rand);
@@ -58,7 +58,7 @@ deltaT = 200;
 tstartnew = tmin;
 tendnew = tmax;
 
-winsearch = 1;
+winsearch = 0;
 if winsearch == 1
 for m = 20:-1:-20
 for l = -20:20
@@ -92,7 +92,7 @@ end
 end
 
 %%%%%%%%%%%Save the time limits%%%%%%%%%%%
-timefile = '/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-04.01/Ear 1/Cell 4/Tstartend.mat';
+timefile = '/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 13/Tstartend.mat';
 save(timefile, 'Tstartend');
 display('saving...');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
