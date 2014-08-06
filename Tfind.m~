@@ -1,6 +1,6 @@
 function Tfind
 %Experimental data. All points files%%%%%%%%%%%%%%%%%
-load('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/20130908-cell15-4.mat');
+load('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/20130908-cell15-1.mat');
 
 %Operating points in ascending order
 Fsort = sort(F_rand);
@@ -13,11 +13,19 @@ kgrid(end+1) = max(k_rand);
 Fgridrev = sort(Fgrid,'descend');
 
 sizeXd = size(Xd);
+Np = sizeXd(2);
+Nt = sizeXd(3);
 
 if length(sizeXd) == 3
     Np = sizeXd(2);
     Nt = sizeXd(3);
     Tstartend(1:2,1:Np,1:Nt) = zeros(2,Np,Nt);
+   %%%%%%%%    
+
+elseif length(sizeXd) == 2
+    Np = sizeXd(2);
+    Tstartend(1:2,1:Np) = zeros(2,Np);
+end
 
 for Findex = 1:length(Fgrid)
 for kindex = 1:length(kgrid)
@@ -90,88 +98,10 @@ Tstartend(1,Npulse,Ntrial) = tstartnew;
 Tstartend(2,Npulse,Ntrial) = tendnew;
 
 end
-end    
-    
-elseif length(sizeXd) == 2
-    Np = sizeXd(2);
-    Tstartend(1:2,1:Np) = zeros(2,Np);
-for Findex = 1:length(Fgrid)
-for kindex = 1:length(kgrid)
-
-Npt = find(k_rand == kgrid(kindex) & F_rand == Fgridrev(Findex));
-if rem(Npt,Np) ~= 0;
-    Npulse = rem(Npt,Np);
-else
-    Npulse = Np;
-end  
-Ntrial = (Npt - Npulse)/Np + 1;
-Npt = (Ntrial-1)*Np+Npulse;
-
-X = Xd(:,Npulse);
-
-deltat = 0.1;%ms
-tvec = 0:deltat:(length(X)-1)*deltat;
-
-ssstartpt = 1;
-ssendpt = length(X);
-
-%Minimum window length allowed
-Tmin  = min([3000 tvec(ssendpt)]); %ms
-
-if tvec(ssendpt) - tvec(ssstartpt) >= Tmin
-tmax = tvec(ssendpt);
-tmin = tvec(ssstartpt);
-else
-tmax = tvec(ssendpt);
-tmin = tmax - Tmin;
-end
-
-XpsdpeakMax = 0;
-ratio = 0;
-tstart = 0;
-tend = 8400;
-deltaT = 200;
-
-tstartnew = tmin;
-tendnew = tmax;
-
-winsearch = 0;
-if winsearch == 1
-for m = 20:-1:-20
-for l = -20:20
-    if tstart+l*deltaT >= tmin && tend+m*deltaT <= tmax && Tmin <= tend+m*deltaT - (tstart+l*deltaT)
-    [fpsdpeak, Xpsdpeak, XpsdmaximaMedian] = ssPSD(X,tstart+l*deltaT,tend+m*deltaT);
-    if Xpsdpeak/XpsdmaximaMedian > ratio
-        ratio = Xpsdpeak/XpsdmaximaMedian;
-        XpsdpeakMax = Xpsdpeak;
-        tstartnew = tstart + l*deltaT;
-        tendnew = tend + m*deltaT;
-        %'choice1'
-    elseif Xpsdpeak/XpsdmaximaMedian == ratio && Xpsdpeak > XpsdpeakMax
-        XpsdpeakMax = Xpsdpeak;
-        tstartnew = tstart + l*deltaT;
-        tendnew = tend + m*deltaT;
-        %'choice2'
-    elseif Xpsdpeak/XpsdmaximaMedian == ratio && Xpsdpeak == XpsdpeakMax && (tstartnew > tstart + l*deltaT || tendnew < tend + m*deltaT)
-        tstartnew = tstart + l*deltaT;
-        tendnew = tend + m*deltaT;
-        %'choice3'
-    end
-    end
-end
-end
-end
-
-Tstartend(1,Npulse,Ntrial) = tstartnew;
-Tstartend(2,Npulse,Ntrial) = tendnew;
-
-end
-end
-
 end
 
 %%%%%%%%%%%Save the time limits%%%%%%%%%%%
-timefile = '/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/Tstartend4.mat';
+timefile = '/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/Tstartend.mat';
 save(timefile, 'Tstartend');
 display('saving...');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
