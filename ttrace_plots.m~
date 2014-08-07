@@ -1,7 +1,7 @@
 clear all; close all;
 
-load('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/20130908-cell15-4.mat');
-load('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/Tstartend4.mat');
+load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 4/20140805-cell4.mat');
+load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 4/Tstartend.mat');
 
 
 %Operating points in ascending order
@@ -18,8 +18,8 @@ sizeXd = size(Xd);
 deltat = 0.1;%ms
 Fs = 1/deltat;%kHz
 tvec = 0:deltat:(length(Xd)-1)*deltat;
-tmin = 3000;%ms
-tmax = 5000;
+tmin = 0;%ms
+tmax = tvec(end);
 minindex = find(abs(tvec-tmin)==min(abs(tvec-tmin)));
 maxindex = find(abs(tvec-tmax)==min(abs(tvec-tmax)));
 

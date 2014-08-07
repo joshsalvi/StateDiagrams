@@ -1,11 +1,11 @@
 %Experimental data. All points files%%%%%%%%%%%%%%%%%
-load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-04.01/Ear 1/Cell 5/20140804-cell5.mat');
+load('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/20130908-cell15.mat');
 fishfigs = 0;
 if fishfigs == 1
 load('/Users/dmelody/Work/Ear/Hair Bundle Expts/Models/Noise/SmallCell/Modalitymedian0.67sDetrend3smin1Hzmin.mat');
-load('/Users/dmelody/Work/Ear/Hair Bundle Expts/Models/FishAnal/customcolormaps-redblue.mat');
+load('/Users/joshsalvi/GitHub/StateDiagrams/customcolormaps-redblue.mat');
 end
-load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-04.01/Ear 1/Cell 5/Tstartend.mat');
+load('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/Tstartend4.mat');
 
 %Operating points in ascending order
 Fsort = sort(F_rand);

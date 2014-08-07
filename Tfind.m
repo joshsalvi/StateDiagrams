@@ -1,6 +1,6 @@
 function Tfind
 %Experimental data. All points files%%%%%%%%%%%%%%%%%
-load('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/20130908-cell15-4.mat');
+load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 4/20140805-cell4.mat');
 
 %Operating points in ascending order
 Fsort = sort(F_rand);
@@ -40,7 +40,8 @@ ssstartpt = 1;
 ssendpt = length(X);
 
 %Minimum window length allowed
-Tmin  = min([3000 tvec(ssendpt)]); %ms
+% CHOICE
+Tmin  = min([2000 tvec(ssendpt)]); %ms
 
 if tvec(ssendpt) - tvec(ssstartpt) >= Tmin
 tmax = tvec(ssendpt);
@@ -52,17 +53,17 @@ end
 
 XpsdpeakMax = 0;
 ratio = 0;
-tstart = 0;
+tstart = 4200;
 tend = 8400;
 deltaT = 200;
 
 tstartnew = tmin;
 tendnew = tmax;
 
-winsearch = 0;
+winsearch = 1;
 if winsearch == 1
-for m = 20:-1:-20
-for l = -20:20
+for m = 22:-1:-22
+for l = -22:22
     if tstart+l*deltaT >= tmin && tend+m*deltaT <= tmax && Tmin <= tend+m*deltaT - (tstart+l*deltaT)
     [fpsdpeak, Xpsdpeak, XpsdmaximaMedian] = ssPSD(X,tstart+l*deltaT,tend+m*deltaT);
     if Xpsdpeak/XpsdmaximaMedian > ratio
@@ -171,7 +172,7 @@ end
 end
 
 %%%%%%%%%%%Save the time limits%%%%%%%%%%%
-timefile = '/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/Tstartend4.mat';
+timefile = '/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 4/Tstartend1Hzmin.mat';
 save(timefile, 'Tstartend');
 display('saving...');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -195,7 +196,8 @@ X = X(ssstartpt:ssendpt) - mean(X(ssstartpt:ssendpt));
 %fmin = Fs/length(Xd);%Actual frequency resolution if entire time trace is used
 %CHOICE
 %fmin = 0.002;
-fmin = 0.001;
+% CHOICE
+fmin = 0.001;%kHz
 %CHOICE
 fmax = 0.1;
 
@@ -237,7 +239,7 @@ Xpsd = Xpsd./fscale;%Change units to (nm)^2/Hz
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %Same number of elements as Xpsd
-Xpsdmaxima = Xpsd.*(fpsd >= fmin & Xpsd > circshift(Xpsd,[1 1]) & Xpsd > circshift(Xpsd,[-1 1]));
+Xpsdmaxima = Xpsd.*(fpsd >= fmin & fpsd <= fmax & Xpsd > circshift(Xpsd,[1 1]) & Xpsd > circshift(Xpsd,[-1 1]));
 
 Xpsdpeak = max(Xpsdmaxima);
 
