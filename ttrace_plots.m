@@ -1,12 +1,12 @@
 clear all; close all;
 %%%%%%%
 load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 4/20140805-cell4.mat');
-fishfigs = 1;
+fishfigs = 0;
 if fishfigs == 1
-load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 4/Modality____.mat');
+load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 4/Modality1Hzmin.mat');
 load('/Users/joshsalvi/GitHub/StateDiagrams/customcolormaps-redblue.mat');
 end
-load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 4/Tstartend.mat');
+load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 4/Tstartend1Hzmin.mat');
 %%%%%%%
 
 %Operating points in ascending order

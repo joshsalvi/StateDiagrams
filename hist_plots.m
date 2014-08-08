@@ -1,6 +1,6 @@
 %Experimental data. All points files%%%%%%%%%%%%%%%%%
-load('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/20130908-cell15.mat');
-load('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/Tstartend4.mat');
+load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 4/20140805-cell4.mat');
+load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 4/Tstartend1Hzmin.mat');
 
 %Operating points in ascending order
 Fsort = sort(F_rand);
@@ -26,8 +26,8 @@ maxindex = find(abs(tvec-tmax)==min(abs(tvec-tmax)));
 %Check that the local mean and std have converged
 
 %Remove the drift from each time trace
-fdrift = 0.001;%Hz
-fdrift = 0.0005;%Hz
+fdrift = 0.001;%kHz
+fdrift = 0.0005;%kHz            % CHOICE
 fsmooth = 3*fdrift;
 %ws must be odd
 ws = (1/fsmooth)/deltat;
@@ -117,11 +117,12 @@ Xlower = [Xlower' -Xlower']';
 %Null is the distribution is symmetric so the halfs are the same
 %CHOICE
 length(num2str(X(10),'%10.100g')); %Number of significant digits in data
-%alphasymm = 10^-150;
+% CHOICE
 alphasymm = 10^-2;
 eps(alphasymm); %The difference between alphasymm and the next largest double-precision number
 [hsymm,psymm,KSstat] = kstest2(Xupper,Xlower,alphasymm);
-if psymm <= alphasymm && KSstat >= 8*10^-2
+% CHOICE
+if psymm <= alphasymm && KSstat >= 6*10^-2
     hsymm = 1;
     symmtext = 'A';
 else
@@ -131,7 +132,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%Kurtosis test%%%%%%%%%%%%%%%%%%%%%
-%alphaK = 10^-75;
+% CHOICE
 alphaK = 10^-3;
 NK = length(X);
 %Reference: Basic Statistics for Social Research (1997)
@@ -144,6 +145,7 @@ Kstat = (kurtosis(X,0)-3)/SEK;
 %Kstat is approximately normally distributed for NK > 10^3 with
 %mean 0 and standard deviation 1
 pK = cdf('Normal',Kstat,0,1);
+% CHOICE
 if pK <= alphaK && Kstat <= -18.0
     Ktext = 'F';
     hk = 1;
@@ -160,8 +162,10 @@ alphauni = 0.01;
 %Algorithm is sort X and look for a concave/convex change
 %dip ~> 0.1 => not unimodal
 %Nboot = 5*10^4;
+% CHOICE
 Nboot = 2*10^2; %Number of bootstraped distributions needed to find puni
 [dip, puni, Xlow, Xup]=hartigansdipsigniftest(X,Nboot);
+% CHOICE
 if puni <= alphauni && dip >= 1.0*10^-3
     huni = 1;
     unitext = 'M';
@@ -235,7 +239,7 @@ end
 end
 end
 %%%%%%%%%%%Save the modality%%%%%%%%%%%
-modfile = '/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/Modality.mat';
+modfile = '/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 4/Modality1Hzmin.mat';
 save(modfile, 'Mod');
 display('saving...');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

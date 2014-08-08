@@ -1,11 +1,11 @@
 %Experimental data. All points files%%%%%%%%%%%%%%%%%
-load('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/20130908-cell15.mat');
-fishfigs = 0;
+load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 4/20140805-cell4.mat');
+fishfigs = 1;
 if fishfigs == 1
-load('/Users/dmelody/Work/Ear/Hair Bundle Expts/Models/Noise/SmallCell/Modalitymedian0.67sDetrend3smin1Hzmin.mat');
+load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 4/Modality1Hzmin.mat');
 load('/Users/joshsalvi/GitHub/StateDiagrams/customcolormaps-redblue.mat');
 end
-load('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/Tstartend4.mat');
+load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 4/Tstartend1Hzmin.mat');
 
 %Operating points in ascending order
 Fsort = sort(F_rand);
@@ -210,7 +210,7 @@ kvec = kvec(fishvecpts);
 [rhofreqF,prhofreqF]=corr(freqvec,Fvec,'type','Spearman');
 [rhoamplk,prhoamplk]=corr(amplvec,kvec,'type','Spearman');
 [rhoamplF,prhoamplF]=corr(amplvec,Fvec,'type','Spearman');
-save('FreqAmplcorrelations.mat','rhofreqampl','prhofreqampl','rhofreqk','prhofreqk','rhofreqF','prhofreqF','rhoamplk','prhoamplk','rhoamplF','prhoamplF')
+save('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 4/FreqAmplcorrelations1Hzmin.mat','rhofreqampl','prhofreqampl','rhofreqk','prhofreqk','rhofreqF','prhofreqF','rhoamplk','prhoamplk','rhoamplF','prhoamplF')
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %Create grid so that data squares are centered correctly.

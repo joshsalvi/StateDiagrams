@@ -1,6 +1,6 @@
 function Tfind
 %Experimental data. All points files%%%%%%%%%%%%%%%%%
-load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 4/20140805-cell4.mat');
+load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 7/20140805-cell7.mat');
 
 %Operating points in ascending order
 Fsort = sort(F_rand);
@@ -117,7 +117,7 @@ ssstartpt = 1;
 ssendpt = length(X);
 
 %Minimum window length allowed
-Tmin  = min([3000 tvec(ssendpt)]); %ms
+Tmin  = min([1500 tvec(ssendpt)]); %ms
 
 if tvec(ssendpt) - tvec(ssstartpt) >= Tmin
 tmax = tvec(ssendpt);
@@ -130,13 +130,13 @@ end
 XpsdpeakMax = 0;
 ratio = 0;
 tstart = 0;
-tend = 8400;
-deltaT = 200;
+tend = 1999;
+deltaT = 100;
 
 tstartnew = tmin;
 tendnew = tmax;
 
-winsearch = 0;
+winsearch = 1;
 if winsearch == 1
 for m = 20:-1:-20
 for l = -20:20
@@ -172,7 +172,7 @@ end
 end
 
 %%%%%%%%%%%Save the time limits%%%%%%%%%%%
-timefile = '/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 4/Tstartend1Hzmin.mat';
+timefile = '/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 7/Tstartend2Hzmin.mat';
 save(timefile, 'Tstartend');
 display('saving...');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
