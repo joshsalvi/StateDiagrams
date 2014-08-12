@@ -1,6 +1,8 @@
 %Experimental data. All points files%%%%%%%%%%%%%%%%%
-load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 4/20140805-cell4.mat');
-load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 4/Tstartend1Hzmin.mat');
+%load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 7/20140805-cell7.mat');
+%load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 7/Tstartend2Hzmin.mat');
+load('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/20130908-cell15-2-2d.mat');
+load('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/2-Tstartend1sec1Hzmin.mat');
 
 %Operating points in ascending order
 Fsort = sort(F_rand);
@@ -122,7 +124,7 @@ alphasymm = 10^-2;
 eps(alphasymm); %The difference between alphasymm and the next largest double-precision number
 [hsymm,psymm,KSstat] = kstest2(Xupper,Xlower,alphasymm);
 % CHOICE
-if psymm <= alphasymm && KSstat >= 6*10^-2
+if psymm <= alphasymm && KSstat >= 0.02
     hsymm = 1;
     symmtext = 'A';
 else
@@ -166,7 +168,7 @@ alphauni = 0.01;
 Nboot = 2*10^2; %Number of bootstraped distributions needed to find puni
 [dip, puni, Xlow, Xup]=hartigansdipsigniftest(X,Nboot);
 % CHOICE
-if puni <= alphauni && dip >= 1.0*10^-3
+if puni <= alphauni && dip >= 0.002
     huni = 1;
     unitext = 'M';
 else
@@ -239,7 +241,8 @@ end
 end
 end
 %%%%%%%%%%%Save the modality%%%%%%%%%%%
-modfile = '/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 4/Modality1Hzmin.mat';
+%modfile = '/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 7/Modality2Hzmin.mat';
+modfile = '/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/2-Modality1sec1Hzmin.mat';
 save(modfile, 'Mod');
 display('saving...');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

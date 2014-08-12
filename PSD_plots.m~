@@ -139,9 +139,9 @@ Xpsd = Xpsd./fscale;%Change units to (nm)^2/Hz
 if elim == 1
     clear freqrange f60 f120 f180
     freqrange = find(fpsd <= fmax & fpsd >= fmin & Xpsd > circshift(Xpsd,[1 1]) & Xpsd > circshift(Xpsd,[-1 1]));
-    f60 = find(fpsd(freqrange) <= .065 & fpsd(freqrange) >= .055); freqrange(f60)=[];
-    f120 = find(fpsd(freqrange) <= .125 & fpsd(freqrange) >= .115); freqrange(f120)=[];
-    f180 = find(fpsd(freqrange) <= .185 & fpsd(freqrange) >= .175); freqrange(f180)=[];
+    f60 = find(fpsd(freqrange) <= .065 & fpsd(freqrange) >= .055); freqrange([freqrange==f60])=[];
+    f120 = find(fpsd(freqrange) <= .125 & fpsd(freqrange) >= .115); freqrange([freqrange==f120])=[];
+    f180 = find(fpsd(freqrange) <= .185 & fpsd(freqrange) >= .175); freqrange([freqrange==f180])=[];
 else
     clear freqrange
     freqrange= find(fpsd <= fmax & fpsd >= fmin & Xpsd > circshift(Xpsd,[1 1]) & Xpsd > circshift(Xpsd,[-1 1]));
