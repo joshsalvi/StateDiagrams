@@ -1,13 +1,14 @@
 %Experimental data. All points files%%%%%%%%%%%%%%%%%
-%{
-load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 7/20140805-cell7.mat');
+
+load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 11/20140805-cell11.mat');
 fishfigs = 1;
 if fishfigs == 1
-load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 7/Modality2Hzmin.mat');
+load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 11/Modality-foranalysis.mat');
 load('/Users/joshsalvi/GitHub/StateDiagrams/customcolormaps-redblue.mat');
 end
-load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 7/Tstartend2Hzmin.mat');
+load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 11/Tstartend1Hzmin.mat');
 %}
+%{
 load('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/20130908-cell15-2-2d.mat');
 fishfigs = 1;
 if fishfigs == 1
@@ -15,6 +16,7 @@ load('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Ana
 load('/Users/joshsalvi/GitHub/StateDiagrams/customcolormaps-redblue.mat');
 end
 load('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/2-Tstartend1Hzmin.mat');
+%}
 %Operating points in ascending order
 Fsort = sort(F_rand);
 Fgrid = Fsort(diff(Fsort) ~= 0);
@@ -57,7 +59,7 @@ ndev = 2;
 %fmin = Fs/length(Xd);%Actual frequency resolution if entire time trace is used
 fmin = 0.001;
 fmax = 0.2;
-elim = 0;               % eliminate 60, 120, and 180 Hz peaks?
+elim = 1;               % eliminate 60, 120, and 180 Hz peaks?
 Xpsdminlim = 10^-1;
 Xpsdmaxlim = 10^3;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -137,14 +139,16 @@ Xpsd = Xpsd./fscale;%Change units to (nm)^2/Hz
 
 %Same number of elements as Xpsd
 if elim == 1
-    clear freqrange f60 f120 f180
-    freqrange = find(fpsd <= fmax & fpsd >= fmin & Xpsd > circshift(Xpsd,[1 1]) & Xpsd > circshift(Xpsd,[-1 1]));
-    f60 = find(fpsd(freqrange) <= .065 & fpsd(freqrange) >= .055); freqrange(f60)=[];
-    f120 = find(fpsd(freqrange) <= .125 & fpsd(freqrange) >= .115); freqrange(f120)=[];
-    f180 = find(fpsd(freqrange) <= .185 & fpsd(freqrange) >= .175); freqrange(f180)=[];
+    clear freqrange f60 f120 f180 freqrange2
+    freqrange2 = find(fpsd <= fmax & fpsd >= fmin & Xpsd > circshift(Xpsd,[1 1]) & Xpsd > circshift(Xpsd,[-1 1]));
+    f60 = find(fpsd(freqrange2) <= .07 & fpsd(freqrange2) >= .05); freqrange2(f60)=[];
+    f120 = find(fpsd(freqrange2) <= .13 & fpsd(freqrange2) >= .11); freqrange2(f120)=[];
+    f180 = find(fpsd(freqrange2) <= .19 & fpsd(freqrange2) >= .17); freqrange2(f180)=[];
+    freqrange = (fpsd <= fmax & fpsd >= fmin & Xpsd > circshift(Xpsd,[1 1]) & Xpsd > circshift(Xpsd,[-1 1]));
+    freqrange(freqrange2)=0;
 else
     clear freqrange
-    freqrange= find(fpsd <= fmax & fpsd >= fmin & Xpsd > circshift(Xpsd,[1 1]) & Xpsd > circshift(Xpsd,[-1 1]));
+    freqrange= (fpsd <= fmax & fpsd >= fmin & Xpsd > circshift(Xpsd,[1 1]) & Xpsd > circshift(Xpsd,[-1 1]));
 end
 
 Xpsdmaxima = Xpsd.*(freqrange);
@@ -230,7 +234,9 @@ kvec = kvec(fishvecpts);
 [rhofreqF,prhofreqF]=corr(freqvec,Fvec,'type','Spearman');
 [rhoamplk,prhoamplk]=corr(amplvec,kvec,'type','Spearman');
 [rhoamplF,prhoamplF]=corr(amplvec,Fvec,'type','Spearman');
-save('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/2-FreqAmplcorrelations1Hzmin.mat','rhofreqampl','prhofreqampl','rhofreqk','prhofreqk','rhofreqF','prhofreqF','rhoamplk','prhoamplk','rhoamplF','prhoamplF')
+
+save('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 11/FreqAmplcorrelations1HzminElim.mat','rhofreqampl','prhofreqampl','rhofreqk','prhofreqk','rhofreqF','prhofreqF','rhoamplk','prhoamplk','rhoamplF','prhoamplF')
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %Create grid so that data squares are centered correctly.
@@ -305,7 +311,7 @@ set(cbh,'xticklabel',ceil(min(min(freqgrid(find(freqgrid~=0))))):ceil((floor(max
 
 set(gca, 'LooseInset', [0,0.2,0,0]);
 
-saveas(gcf,'FreqFish','epsc')
+%saveas(gcf,'FreqFish','epsc')
 
 %shading interp
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
