@@ -138,6 +138,7 @@ Xpsd = Xpsd./fscale;%Change units to (nm)^2/Hz
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %Same number of elements as Xpsd
+% Eliminate 60,120,180 ± 1 Hz
 if elim == 1
     clear freqrange f60 f120 f180 freqrange2
     freqrange2 = find(fpsd <= fmax & fpsd >= fmin & Xpsd > circshift(Xpsd,[1 1]) & Xpsd > circshift(Xpsd,[-1 1]));
