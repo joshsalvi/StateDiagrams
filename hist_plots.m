@@ -1,8 +1,8 @@
 %Experimental data. All points files%%%%%%%%%%%%%%%%%
 %load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 7/20140805-cell7.mat');
 %load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 7/Tstartend2Hzmin.mat');
-load('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/SSOverTime/20130908-cell15-4-2d.mat');
-load('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/SSOverTime/4-Tstartend1sec1Hzmin.mat');
+load('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/SSOverTime/20130908-cell15-3-2d.mat');
+load('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/SSOverTime/3-Tstartend2sec1Hzmin.mat');
 
 %Operating points in ascending order
 Fsort = sort(F_rand);
@@ -159,7 +159,7 @@ end
 
 %%%%%%%Unimodality test%%%%%%%%%%
 %CHOICE
-alphauni = 0.01;
+alphauni = 1e-4;
 %Null is that there is no dip. Null is unimodality.
 %Algorithm is sort X and look for a concave/convex change
 %dip ~> 0.1 => not unimodal
@@ -242,7 +242,7 @@ end
 end
 %%%%%%%%%%%Save the modality%%%%%%%%%%%
 %modfile = '/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 7/Modality2Hzmin.mat';
-modfile = '/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/SSOverTime/4-Modality1sec1Hzmin.mat';
+modfile = '/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/SSOverTime/3-Modality2sec1Hzmin.mat';
 save(modfile, 'Mod');
 display('saving...');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

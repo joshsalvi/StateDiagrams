@@ -1,5 +1,5 @@
 %Experimental data. All points files%%%%%%%%%%%%%%%%%
-
+%{
 load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 12/20140805-cell12.mat');
 fishfigs = 1;
 if fishfigs == 1
@@ -8,15 +8,14 @@ load('/Users/joshsalvi/GitHub/StateDiagrams/customcolormaps-redblue.mat');
 end
 load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 12/Tstartend1Hzmin.mat');
 %}
-%{
-load('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/20130908-cell15-2-2d.mat');
+load('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/SSOverTime/20130908-cell15-4-2d.mat');
 fishfigs = 1;
 if fishfigs == 1
-load('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/2-Modality1Hzmin.mat');
+load('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/SSOverTime/4-Modality2sec1Hzmin.mat');
 load('/Users/joshsalvi/GitHub/StateDiagrams/customcolormaps-redblue.mat');
 end
-load('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/2-Tstartend1Hzmin.mat');
-%}
+load('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/SSOverTime/4-Tstartend2sec1Hzmin.mat');
+
 %Operating points in ascending order
 Fsort = sort(F_rand);
 Fgrid = Fsort(diff(Fsort) ~= 0);
@@ -237,7 +236,7 @@ kvec = kvec(fishvecpts);
 [rhoamplk,prhoamplk]=corr(amplvec,kvec,'type','Spearman');
 [rhoamplF,prhoamplF]=corr(amplvec,Fvec,'type','Spearman');
 
-save('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 12/FreqAmplcorrelations1HzminElim.mat','rhofreqampl','prhofreqampl','rhofreqk','prhofreqk','rhofreqF','prhofreqF','rhoamplk','prhoamplk','rhoamplF','prhoamplF')
+save('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/SSOverTime/4-FreqAmplcorrelations2sec1HzminElim.mat','rhofreqampl','prhofreqampl','rhofreqk','prhofreqk','rhofreqF','prhofreqF','rhoamplk','prhoamplk','rhoamplF','prhoamplF')
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

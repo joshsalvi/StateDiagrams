@@ -2,7 +2,7 @@ function Tfind
 %Experimental data. All points files%%%%%%%%%%%%%%%%%
 %load('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/20130908-cell15-2.mat');
 %load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 11/20140805-cell11.mat');
-load('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/Gentamicin/2014-08-05.01/Ear 1/Cell 8/20140805-cell8.mat')
+load('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/Gentamicin/2014-08-05.01/Ear 1/Cell 4/20140805-cell4.mat')
 
 %Operating points in ascending order
 Fsort = sort(F_rand);
@@ -43,7 +43,7 @@ ssendpt = length(X);
 
 %Minimum window length allowed
 % CHOICE
-Tmin  = min([2000 tvec(ssendpt)]); %ms
+Tmin  = min([3000 tvec(ssendpt)]); %ms
 
 if tvec(ssendpt) - tvec(ssstartpt) >= Tmin
 tmax = tvec(ssendpt);
@@ -174,7 +174,7 @@ end
 end
 
 %%%%%%%%%%%Save the time limits%%%%%%%%%%%
-timefile = '/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/Gentamicin/2014-08-05.01/Ear 1/Cell 8/Tstartend2sec2Hzmin.mat';
+timefile = '/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/Gentamicin/2014-08-05.01/Ear 1/Cell 4/Tstartend3sec2Hzmin.mat';
 save(timefile, 'Tstartend');
 display('saving...');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
