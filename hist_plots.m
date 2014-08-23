@@ -1,8 +1,8 @@
 %Experimental data. All points files%%%%%%%%%%%%%%%%%
 %load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 7/20140805-cell7.mat');
 %load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 7/Tstartend2Hzmin.mat');
-load('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/SSOverTime/20130908-cell15-3-2d.mat');
-load('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/SSOverTime/3-Tstartend2sec1Hzmin.mat');
+load('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/Gentamicin/2014-08-05.01/Ear 1/Cell 8/20140805-cell8.mat');
+load('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/Gentamicin/2014-08-05.01/Ear 1/Cell 8/Tstartend2sec2Hzmin.mat');
 
 %Operating points in ascending order
 Fsort = sort(F_rand);
@@ -124,7 +124,7 @@ alphasymm = 10^-2;
 eps(alphasymm); %The difference between alphasymm and the next largest double-precision number
 [hsymm,psymm,KSstat] = kstest2(Xupper,Xlower,alphasymm);
 % CHOICE
-if psymm <= alphasymm && KSstat >= 0.02
+if psymm <= alphasymm && KSstat >= 0.06
     hsymm = 1;
     symmtext = 'A';
 else
@@ -168,7 +168,7 @@ alphauni = 1e-4;
 Nboot = 2*10^2; %Number of bootstraped distributions needed to find puni
 [dip, puni, Xlow, Xup]=hartigansdipsigniftest(X,Nboot);
 % CHOICE
-if puni <= alphauni && dip >= 0.002
+if puni <= alphauni && dip >= 0.02
     huni = 1;
     unitext = 'M';
 else
@@ -242,7 +242,7 @@ end
 end
 %%%%%%%%%%%Save the modality%%%%%%%%%%%
 %modfile = '/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 7/Modality2Hzmin.mat';
-modfile = '/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/SSOverTime/3-Modality2sec1Hzmin.mat';
+modfile = '/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/Gentamicin/2014-08-05.01/Ear 1/Cell 8/Modality2sec2Hzmin.mat';
 save(modfile, 'Mod');
 display('saving...');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -8,7 +8,7 @@ amplgrid(8,:)=[];
 
 RMSampl = reshape(amplgrid,1,49);
 
-save('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/Gentamicin/2014-08-05.01/Ear 1/Cell 7/RMSampl4sec2Hzmin.mat','RMSampl');
+save('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/Gentamicin/2014-08-05.01/Ear 1/Cell 8/RMSampl2sec2Hzmin.mat','RMSampl');
 
 
 %% Amplitude and Frequency
@@ -22,4 +22,4 @@ freqgrid(8,:)=[];
 ampl = reshape(amplgrid,1,49);
 freq = reshape(freqgrid,1,49);
 
-save('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/Gentamicin/2014-08-05.01/Ear 1/Cell 7/amplfreq3sec2Hzmin.mat','ampl','freq');
+save('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/Gentamicin/2014-08-05.01/Ear 1/Cell 7/amplfreq2sec2Hzmin.mat','ampl','freq');
