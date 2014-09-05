@@ -1,15 +1,7 @@
-function [fe kv gv mv fen kvn gvn mvn] = autoloadclamp(fmin, fmax, kmin, kmax, gmin, gmax, mmin, mmax, nf, nk, ng, nm, gentypef, gentypek, gentypeg, gentypem, sorttype, sortorder)
-% [fe kv gv mv m] = autoloadclamp(fmin, fmax, kmin, kmax, gmin, gmax, mmin, mmax, nf, nk, ng, nm, gentypef, gentypek, gentypeg, gentypem, sorttype, sortorder)
+function [fe kv gv mv fkgmn] = autoloadclamp(fmin, fmax, kmin, kmax, gmin, gmax, mmin, mmax, nf, nk, ng, nm, gentypef, gentypek, gentypeg, gentypem)
+% [fe kv gv mv m] = autoloadclamp(fmin, fmax, kmin, kmax, gmin, gmax, mmin, mmax, nf, nk, ng, nm, gentypef, gentypek, gentypeg, gentypem)
 % gentypeX refers to linear spacing (1) or logarithhmic spacing (2) for each
 % of the virtual parameters, including force
-%
-% Note that "sortorder" is a four-element array with unique integers 1-4.
-% This defines the order of sorting, such that sortorder=[fe kv gv mv] and
-% the numbers determine in which order the arrays will be sorted. For
-% example sortorder=[2 1 4 3] will first sort kv, then fe, then mv, and
-% finally gv.
-%
-% jsalvi@rockefeller.edu
 
 
 % Set up arrays 
@@ -122,32 +114,11 @@ for i = 1:nf
     end
 end
 
-% Sorttype defines the method of iteration
-% 1 = sorted; 2 = random
+% Sort array in order specified 
+% [Fe kv gv mv] using [1 2 3 4] in any order
 
-if sorttype == 1
-    % Sort array in order specified 
-    % [Fe kv gv mv] using [1 2 3 4] in any order
-    fkgmn2 = sortrows(sortrows(sortrows(sortrows(fkgmn,sortorder(4)),sortorder(3)),sortorder(2)),sortorder(1));
-    clear fkgmn
-elseif sorttype == 2
-    % Generate a random index array
-    sortrand = randperm(nf*nk*ng*nm);
-    for i = 1:(nf*nk*ng*nm)
-        for j = 1:4
-            fkgmn2(i,j) = fkgmn(sortrand(i),j);
-        end
-    end 
-    clear fkgmn
-else
-    warning('No Sort Type Defined. 1=sort, 2=random');
-    return;
-end
+fkgmn = sortrows(sortrows(sortrows(sortrows(fkgmn,),3),2),1);
 
-% Create 1D output arrays
-fen = fkgmn2(:,1);
-kvn = fkgmn2(:,2);
-gvn = fkgmn2(:,3);
-mvn = fkgmn2(:,4);
+
 
 end
