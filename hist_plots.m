@@ -1,8 +1,8 @@
 %Experimental data. All points files%%%%%%%%%%%%%%%%%
 %load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 7/20140805-cell7.mat');
 %load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 7/Tstartend2Hzmin.mat');
-load('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/Gentamicin/2014-08-05.01/Ear 1/Cell 8/20140805-cell8.mat');
-load('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/Gentamicin/2014-08-05.01/Ear 1/Cell 8/Tstartend2sec2Hzmin.mat');
+load('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/Gentamicin/2014-08-05.01/Ear 1/Cell 7/20140805-cell7.mat');
+load('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/Gentamicin/2014-08-05.01/Ear 1/Cell 7/Tstartend2sec2Hzmin.mat');
 
 %Operating points in ascending order
 Fsort = sort(F_rand);
@@ -167,6 +167,7 @@ alphauni = 1e-4;
 % CHOICE
 Nboot = 2*10^2; %Number of bootstraped distributions needed to find puni
 [dip, puni, Xlow, Xup]=hartigansdipsigniftest(X,Nboot);
+Xlowsaved(Findex,kindex)=Xlow; Xupsaved(Findex,kindex)=Xup;
 % CHOICE
 if puni <= alphauni && dip >= 0.02
     huni = 1;
@@ -243,6 +244,6 @@ end
 %%%%%%%%%%%Save the modality%%%%%%%%%%%
 %modfile = '/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 7/Modality2Hzmin.mat';
 modfile = '/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/Gentamicin/2014-08-05.01/Ear 1/Cell 8/Modality2sec2Hzmin.mat';
-save(modfile, 'Mod');
+%save(modfile, 'Mod');
 display('saving...');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
