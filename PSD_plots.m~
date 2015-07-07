@@ -1,14 +1,14 @@
 %Experimental data. All points files%%%%%%%%%%%%%%%%%
 
-load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2015-07-03.01/Ear 1/Cell 5/Extracted Data.mat')
+load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2015-07-01.02/Ear 1/Cell 1/Extracted Data.mat')
 
 fishfigs = 1;
 if fishfigs == 1
 %load('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/Gentamicin/2014-08-05.01/Ear 1/Cell 8/Modality-foranalysis.mat');
-modfile = '/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2015-07-03.01/Ear 1/Cell 5/Modality2sec2Hzmin.mat';
+modfile = '/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2015-07-01.02/Ear 1/Cell 1/Modality2sec2Hzmin.mat';
 load('/Users/joshsalvi/GitHub/StateDiagrams/customcolormaps-redblue.mat');
 end
-load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2015-07-03.01/Ear 1/Cell 5/Tstartend.mat');
+load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2015-07-01.02/Ear 1/Cell 1/Tstartend.mat');
 
 %}
 %{
@@ -32,7 +32,9 @@ sizeXd = size(Xd);
 Np = sizeXd(2);
 Nt = sizeXd(3);
 
-deltat = 1/(Fs*1e-3); %ms
+deltat = 0.1;%ms
+Fs = Fs*1e-3;%kHz
+deltat = 1/Fs;
 tvec = 0:deltat:(length(Xd)-1)*deltat;
 tmin = 0;%ms
 tmax = tvec(end);
@@ -239,7 +241,7 @@ kvec = kvec(fishvecpts);
 [rhoamplk,prhoamplk]=corr(amplvec,kvec,'type','Spearman');
 [rhoamplF,prhoamplF]=corr(amplvec,Fvec,'type','Spearman');
 
-save('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2015-07-03.01/Ear 1/Cell 5/FreqAmplcorrelations2sec2HzminElim.mat','rhofreqampl','prhofreqampl','rhofreqk','prhofreqk','rhofreqF','prhofreqF','rhoamplk','prhoamplk','rhoamplF','prhoamplF')
+save('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2015-07-01.02/Ear 1/Cell 1/FreqAmplcorrelations2sec2HzminElim.mat','rhofreqampl','prhofreqampl','rhofreqk','prhofreqk','rhofreqF','prhofreqF','rhoamplk','prhoamplk','rhoamplF','prhoamplF')
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

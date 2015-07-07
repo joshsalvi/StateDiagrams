@@ -23,7 +23,7 @@ if length(sizeXd) == 3
 
 for Findex = 1:length(Fgrid)
 for kindex = 1:length(kgrid)
-    disp(['Findex: ' num2str(Findex) '  kindex: ' num2str(kindex)]);
+    disp(['Find: ' num2str(Findex) '  kind: ' num2str(kindex)]);
 
 Npt = find(k_rand == kgrid(kindex) & F_rand == Fgridrev(Findex));
 if rem(Npt,Np) ~= 0;
@@ -36,8 +36,8 @@ Npt = (Ntrial-1)*Np+Npulse;
 
 X = Xd(:,Npulse,Ntrial);
 
-%Fs = Fs*1e-3;%kHz
-deltat = 1/(Fs*1e-3); %ms
+Fs = Fs*1e-3;%kHz
+deltat = 1/Fs; %ms
 tvec = 0:deltat:(length(X)-1)*deltat;
 
 ssstartpt = 1;
@@ -58,8 +58,8 @@ end
 XpsdpeakMax = 0;
 ratio = 0;
 nwins = 20;                 % number of windows to search
-%L1 = length(X)/10;
-L1 = tmax/2;
+L1 = length(X)/10;
+L1 = L1/2;
 deltaT = floor(L1/(nwins+1));
 tstart = L1 - deltaT;
 tend = L1 + deltaT;
@@ -123,8 +123,8 @@ Npt = (Ntrial-1)*Np+Npulse;
 
 X = Xd(:,Npulse);
 
-%Fs = Fs*1e-3;%kHz
-deltat = 1/(Fs*1e-3); %ms
+Fs = Fs*1e-3;%kHz
+deltat = 1/Fs; %ms
 tvec = 0:deltat:(length(X)-1)*deltat;
 
 ssstartpt = 1;
@@ -195,8 +195,8 @@ end
 
 function [fpsdpeak, Xpsdpeak, XpsdmaximaMedian] = ssPSD(X,tmanstart,tmanend)
     
-deltat = 1/(Fs*1e-3);%ms
-
+deltat = 0.1;%ms
+Fs = 1/deltat;%kHz
 tvec = 0:deltat:(length(X)-1)*deltat;
 
 ssstartpt = find(abs(tvec-tmanstart)==min(abs(tvec-tmanstart)));
