@@ -1,8 +1,8 @@
 %Experimental data. All points files%%%%%%%%%%%%%%%%%
 %load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 7/20140805-cell7.mat');
 %load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 7/Tstartend2Hzmin.mat');
-load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2015-07-03.01/Ear 1/Cell 5/Extracted Data.mat')
-load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2015-07-03.01/Ear 1/Cell 5/Tstartend.mat');
+load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2015-07-07.01/Ear 1/Cell 1/Extracted Data.mat')
+load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2015-07-07.01/Ear 1/Cell 1/Tstartend.mat');
 
 %Operating points in ascending order
 Fsort = sort(F_rand);
@@ -14,7 +14,11 @@ kgrid(end+1) = max(k_rand);
 
 sizeXd = size(Xd);
 Np = sizeXd(2);
-Nt = sizeXd(3);
+if length(sizeXd) ==3
+    Nt = sizeXd(3);
+else
+    Nt = 1;
+end
 
 deltat = 1/(Fs*1e-3); %ms
 tvec = 0:deltat:(length(Xd)-1)*deltat;
@@ -28,7 +32,7 @@ maxindex = find(abs(tvec-tmax)==min(abs(tvec-tmax)));
 
 %Remove the drift from each time trace
 fdrift = 0.001;%kHz
-fdrift = 0.0005;%kHz            % CHOICE
+fdrift = 0.002;%kHz            % CHOICE
 fsmooth = 3*fdrift;
 %ws must be odd
 ws = (1/fsmooth)/deltat;
@@ -178,9 +182,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %Bin width using the Freedman/Diaconis rule
-bw = 2*iqr(X)/length(X)^(1/3);
-Nbins = ceil((max(X) - min(X))/bw);
-BinSize = (max(X) - min(X))/Nbins;
+Nbins = freedmandiaconis(X);
 [binFreq,binPos]=hist(X,Nbins);
 
 CountTotal = sum(binFreq);
@@ -188,7 +190,7 @@ CountTotal = sum(binFreq);
 %Normalize the histogram
 binFreq = binFreq./CountTotal;
 
-sph = subplot(length(Fgrid),length(kgrid),kindex+(Findex-1)*length(Fgrid));
+sph = subplot(length(Fgrid),length(kgrid),kindex+(Findex-1)*length(kgrid));
 bar(binPos,binFreq,'b');
 hold on
 stem([Xlow Xup],[binFreq(find(abs(Xlow-binPos)==min(abs(Xlow-binPos)))) binFreq(find(abs(Xup-binPos)==min(abs(Xup-binPos))))],'r')
@@ -242,7 +244,7 @@ end
 end
 %%%%%%%%%%%Save the modality%%%%%%%%%%%
 %modfile = '/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 7/Modality2Hzmin.mat';
-modfile = '/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2015-07-03.01/Ear 1/Cell 5/Modality2sec2Hzmin.mat';
+modfile = '/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2015-07-07.01/Ear 1/Cell 1/Modality2sec2Hzmin.mat';
 save(modfile, 'Mod','puni','dip','Kstat','KSstat');
 display('saving...');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

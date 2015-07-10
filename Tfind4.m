@@ -1,130 +1,24 @@
-function Tfind
+function Tfind4
 %Experimental data. All points files%%%%%%%%%%%%%%%%%
 %load('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/20130908-cell15-2.mat');
 %load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 11/20140805-cell11.mat');
-load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2015-07-03.01/Ear 1/Cell 2/Extracted Data.mat')
-
-%Operating points in ascending order
-Fsort = sort(F_rand);
-Fgrid = Fsort(diff(Fsort) ~= 0);
-Fgrid(end+1) = max(F_rand);
-ksort = sort(k_rand);
-kgrid = ksort(diff(ksort) ~= 0);
-kgrid(end+1) = max(k_rand);
-
-Fgridrev = sort(Fgrid,'descend');
-
-sizeXd = size(Xd);
-
-if length(sizeXd) == 3
-    Np = sizeXd(2);
-    Nt = sizeXd(3);
-    Tstartend(1:2,1:Np,1:Nt) = zeros(2,Np,Nt);
-
-for Findex = 1:length(Fgrid)
-for kindex = 1:length(kgrid)
-    disp(['Findex: ' num2str(Findex) '  kindex: ' num2str(kindex)]);
-
-Npt = find(k_rand == kgrid(kindex) & F_rand == Fgridrev(Findex));
-if rem(Npt,Np) ~= 0;
-    Npulse = rem(Npt,Np);
-else
-    Npulse = Np;
-end  
-Ntrial = (Npt - Npulse)/Np + 1;
-Npt = (Ntrial-1)*Np+Npulse;
-
-X = Xd(:,Npulse,Ntrial);
-
-%Fs = Fs*1e-3;%kHz
-deltat = 1/(Fs*1e-3); %ms
-tvec = 0:deltat:(length(X)-1)*deltat;
-
-ssstartpt = 1;
-ssendpt = length(X);
-
-%Minimum window length allowed
-% CHOICE
-Tmin  = min([3000 tvec(ssendpt)]); %ms
-
-if tvec(ssendpt) - tvec(ssstartpt) >= Tmin
-tmax = tvec(ssendpt);
-tmin = tvec(ssstartpt);
-else
-tmax = tvec(ssendpt);
-tmin = tmax - Tmin;
-end
-
-XpsdpeakMax = 0;
-ratio = 0;
-nwins = 20;                 % number of windows to search
-%L1 = length(X)/10;
-L1 = tmax/2;
-deltaT = floor(L1/(nwins+1));
-tstart = L1 - deltaT;
-tend = L1 + deltaT;
+%load('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/Gentamicin/2014-08-05.01/Ear 1/Cell 4/20140805-cell4.mat')
+load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-12-18.01/Ear 1/Cell 1/Extracted Data.mat');
 
 
-tstartnew = tmin;
-tendnew = tmax;
 
-winsearch = 1;
-if winsearch == 1
-    kk = 1;
-for m = nwins:-1:-nwins
-for l = -nwins:nwins
-    if tstart+l*deltaT >= tmin && tend+m*deltaT <= tmax && Tmin <= tend+m*deltaT - (tstart+l*deltaT)
-    [fpsdpeak, Xpsdpeak, XpsdmaximaMedian] = ssPSD(X,tstart+l*deltaT,tend+m*deltaT);
-    if Xpsdpeak/XpsdmaximaMedian > ratio
-        ratio = Xpsdpeak/XpsdmaximaMedian;
-        XpsdpeakMax = Xpsdpeak;
-        tstartnew = tstart + l*deltaT;
-        tendnew = tend + m*deltaT;
-        %'choice1'
-    elseif Xpsdpeak/XpsdmaximaMedian == ratio && Xpsdpeak > XpsdpeakMax
-        XpsdpeakMax = Xpsdpeak;
-        tstartnew = tstart + l*deltaT;
-        tendnew = tend + m*deltaT;
-        %'choice2'
-    elseif Xpsdpeak/XpsdmaximaMedian == ratio && Xpsdpeak == XpsdpeakMax && (tstartnew > tstart + l*deltaT || tendnew < tend + m*deltaT)
-        tstartnew = tstart + l*deltaT;
-        tendnew = tend + m*deltaT;
-        %'choice3'
-    end
-    end
-    %disp(['iter = ' num2str(kk) '/' num2str((2*nwins)^2)]);
-    %kk = kk + 1;
-end
-end
-end
+XdL = length(Xd);
 
-Tstartend(1,Npulse,Ntrial) = tstartnew;
-Tstartend(2,Npulse,Ntrial) = tendnew;
 
-disp(['Tstart: ' num2str(tstartnew) '  Tend: ' num2str(tendnew)]);
+    Tstartend(1:2,1:XdL) = zeros(2,XdL);
+for Findex = 1:XdL
 
-end
-end    
-    
-elseif length(sizeXd) == 2
-    Np = sizeXd(2);
-    Tstartend(1:2,1:Np) = zeros(2,Np);
-for Findex = 1:length(Fgrid)
-for kindex = 1:length(kgrid)
 
-Npt = find(k_rand == kgrid(kindex) & F_rand == Fgridrev(Findex));
-if rem(Npt,Np) ~= 0;
-    Npulse = rem(Npt,Np);
-else
-    Npulse = Np;
-end  
-Ntrial = (Npt - Npulse)/Np + 1;
-Npt = (Ntrial-1)*Np+Npulse;
 
-X = Xd(:,Npulse);
+X = Xd{Findex};
+X = X-smooth(X,length(X)/10);
 
-%Fs = Fs*1e-3;%kHz
-deltat = 1/(Fs*1e-3); %ms
+deltat = 0.001;%ms
 tvec = 0:deltat:(length(X)-1)*deltat;
 
 ssstartpt = 1;
@@ -143,8 +37,8 @@ end
 
 XpsdpeakMax = 0;
 ratio = 0;
-tstart = 0;
-tend = 1999;
+tstart = 5000;
+tend = 10000;
 deltaT = 100;
 
 tstartnew = tmin;
@@ -152,8 +46,8 @@ tendnew = tmax;
 
 winsearch = 1;
 if winsearch == 1
-for m = 20:-1:-20
-for l = -20:20
+for m = 50:-1:-50
+for l = -50:50
     if tstart+l*deltaT >= tmin && tend+m*deltaT <= tmax && Tmin <= tend+m*deltaT - (tstart+l*deltaT)
     [fpsdpeak, Xpsdpeak, XpsdmaximaMedian] = ssPSD(X,tstart+l*deltaT,tend+m*deltaT);
     if Xpsdpeak/XpsdmaximaMedian > ratio
@@ -177,17 +71,85 @@ end
 end
 end
 
-Tstartend(1,Npulse,Ntrial) = tstartnew;
-Tstartend(2,Npulse,Ntrial) = tendnew;
-disp(['Tstart: ' num2str(tstartnew) 'Tend: ' num2str(tendnew)]);
-end
+Tstartend(1,Findex) = tstartnew;
+Tstartend(2,Findex) = tendnew;
+[fpsdpeak(Findex), Xpsdpeak(Findex), XpsdmaximaMedian(Findex)] = ssPSD(X,tstartnew,tendnew);
+
+if Tstartend(1,Findex) ~= Tstartend(2,Findex)
+    ssstartpt = find(abs(tvec-Tstartend(1,Findex))==min(abs(tvec-Tstartend(1,Findex))));
+    ssendpt = find(abs(tvec-Tstartend(2,Findex))==min(abs(tvec-Tstartend(2,Findex))));
+    else
+    ssstartpt = 1;
+    ssendpt = round(length(Xd)/2);
+    ssstartpt = 1;
+    end
+%Remove the mean
+X = Xd{Findex}(ssstartpt:ssendpt)-mean(Xd{Findex}(ssstartpt:ssendpt));
+tvec = tvec(ssstartpt:ssendpt);
+
+
+%%%%%%%%%%%%%%%%PSD%%%%%%%%%%%%%%%%%
+NFFT = (2^4)*2^nextpow2(numel(tvec));
+%NFFT = numel(tvec);
+nw = 1;
+XsegL = floor(length(tvec)/nw);
+welchwin = round(XsegL);
+NPSD = floor(NFFT/nw);%Prevents additional interpolation by pwelch
+noverlap = 0; %To generate an average spectrum of independent points use 0
+winfunc = hamming(welchwin);
+%Find the window normalization factor for the peak amplitude
+freq = 0.005;
+Xsine = sin(2*pi*freq.*tvec);
+[Xsinepsd,fsinepsd] = pwelch(Xsine,winfunc,noverlap,NPSD,Fs);
+winpeaknorm = sqrt(max(Xsinepsd).*(2.*Fs.*XsegL.*(sum(abs(winfunc).^2)./XsegL)))./XsegL;
+[Xpsd,fpsd] = pwelch(X,winfunc,noverlap,NPSD,Fs);
+
+%Multitaper method distorts the spectrum greatly
+%nw = 4;%Time-halfbandwidth product, 2*nw-1 tapers used, min(nw) = 1.25
+%bwidth = 2*nw/tvec(end)
+%[Xpsd,fpsd] = pmtm(X,nw,NPSD,Fs);
+
+%Rescale the PSD
+fscale = 10^3;
+Xpsd = Xpsd./fscale;%Change units to (nm)^2/Hz
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%Same number of elements as Xpsd
+% Eliminate 60,120,180 ± 1 Hz
+elim=1;
+fmax = 15;
+fmin = 0.005;
+if elim == 1
+    clear freqrange f60 f120 f180 freqrange2
+    freqrange2 = find(fpsd <= fmax & fpsd >= fmin & Xpsd > circshift(Xpsd,[1 1]) & Xpsd > circshift(Xpsd,[-1 1]));
+    f60 = find(fpsd(freqrange2) <= .061 & fpsd(freqrange2) >= .059); freqrange2(f60)=[];
+    f120 = find(fpsd(freqrange2) <= .121 & fpsd(freqrange2) >= .119); freqrange2(f120)=[];
+    f180 = find(fpsd(freqrange2) <= .181 & fpsd(freqrange2) >= .179); freqrange2(f180)=[];
+    freqrange = (fpsd <= fmax & fpsd >= fmin & Xpsd > circshift(Xpsd,[1 1]) & Xpsd > circshift(Xpsd,[-1 1]));
+    freqrange(:)=0;
+    freqrange(freqrange2)=1;
+else
+    clear freqrange
+    freqrange= (fpsd <= fmax & fpsd >= fmin & Xpsd > circshift(Xpsd,[1 1]) & Xpsd > circshift(Xpsd,[-1 1]));
 end
 
+Xpsdmaxima = Xpsd.*(freqrange);
+
+Xpsdpeak = max(Xpsdmaxima);
+
+XpsdmaximaMedian = median(Xpsdmaxima(find(Xpsdmaxima >= 0.1*Xpsdpeak)));
+
+%The main peak of bundle oscillations. Can be bigger than the local std.
+XFTpeak1(Findex) = (sqrt(fscale.*Xpsdpeak.*(2.*Fs.*XsegL.*(sum(abs(winfunc).^2)./XsegL)))./XsegL)./winpeaknorm;
+fpsdpeak1(Findex) = fpsd(find(Xpsd == Xpsdpeak));
+
+
 end
+
 
 %%%%%%%%%%%Save the time limits%%%%%%%%%%%
-timefile = '/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2015-07-03.01/Ear 1/Cell 2/Tstartend.mat';
-save(timefile, 'Tstartend');
+timefile = '/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-12-18.01/Ear 1/Cell 1/tstartendPSD.mat';
+save(timefile, 'Tstartend','fpsdpeak','XFTpeak1','fpsdpeak1','tvec');
 display('saving...');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -195,8 +157,8 @@ end
 
 function [fpsdpeak, Xpsdpeak, XpsdmaximaMedian] = ssPSD(X,tmanstart,tmanend)
     
-deltat = 1/(Fs*1e-3);%ms
-
+deltat = 0.1;%ms
+Fs = 1/deltat;%kHz
 tvec = 0:deltat:(length(X)-1)*deltat;
 
 ssstartpt = find(abs(tvec-tmanstart)==min(abs(tvec-tmanstart)));
@@ -213,7 +175,7 @@ X = X(ssstartpt:ssendpt) - mean(X(ssstartpt:ssendpt));
 % CHOICE
 fmin = 0.002;%kHz
 %CHOICE
-fmax = 0.1;
+fmax = 100;
 
 %%%%%%%%%%%%%%%%Windowed PSD%%%%%%%%%%%%%%%%%
 NFFT = (2^4)*2^nextpow2(numel(tvec));

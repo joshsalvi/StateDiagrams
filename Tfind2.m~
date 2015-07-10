@@ -1,8 +1,8 @@
-function Tfind
+function Tfind2
 %Experimental data. All points files%%%%%%%%%%%%%%%%%
 %load('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/20130908-cell15-2.mat');
 %load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 11/20140805-cell11.mat');
-load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2015-07-03.01/Ear 1/Cell 2/Extracted Data.mat')
+load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2015-07-07.01/Ear 1/Cell 6/Extracted Data4.mat')
 
 %Operating points in ascending order
 Fsort = sort(F_rand);
@@ -45,7 +45,7 @@ ssendpt = length(X);
 
 %Minimum window length allowed
 % CHOICE
-Tmin  = min([3000 tvec(ssendpt)]); %ms
+Tmin  = min([1000 tvec(ssendpt)]); %ms
 
 if tvec(ssendpt) - tvec(ssstartpt) >= Tmin
 tmax = tvec(ssendpt);
@@ -74,7 +74,7 @@ if winsearch == 1
 for m = nwins:-1:-nwins
 for l = -nwins:nwins
     if tstart+l*deltaT >= tmin && tend+m*deltaT <= tmax && Tmin <= tend+m*deltaT - (tstart+l*deltaT)
-    [fpsdpeak, Xpsdpeak, XpsdmaximaMedian] = ssPSD(X,tstart+l*deltaT,tend+m*deltaT);
+    [fpsdpeak, Xpsdpeak, XpsdmaximaMedian] = ssPSD(X,tstart+l*deltaT,tend+m*deltaT,Fs);
     if Xpsdpeak/XpsdmaximaMedian > ratio
         ratio = Xpsdpeak/XpsdmaximaMedian;
         XpsdpeakMax = Xpsdpeak;
@@ -155,7 +155,7 @@ if winsearch == 1
 for m = 20:-1:-20
 for l = -20:20
     if tstart+l*deltaT >= tmin && tend+m*deltaT <= tmax && Tmin <= tend+m*deltaT - (tstart+l*deltaT)
-    [fpsdpeak, Xpsdpeak, XpsdmaximaMedian] = ssPSD(X,tstart+l*deltaT,tend+m*deltaT);
+    [fpsdpeak, Xpsdpeak, XpsdmaximaMedian] = ssPSD(X,tstart+l*deltaT,tend+m*deltaT,Fs);
     if Xpsdpeak/XpsdmaximaMedian > ratio
         ratio = Xpsdpeak/XpsdmaximaMedian;
         XpsdpeakMax = Xpsdpeak;
@@ -186,14 +186,14 @@ end
 end
 
 %%%%%%%%%%%Save the time limits%%%%%%%%%%%
-timefile = '/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2015-07-03.01/Ear 1/Cell 2/Tstartend.mat';
+timefile = '/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2015-07-07.01/Ear 1/Cell 6/Tstartend4.mat';
 save(timefile, 'Tstartend');
 display('saving...');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 end
 
-function [fpsdpeak, Xpsdpeak, XpsdmaximaMedian] = ssPSD(X,tmanstart,tmanend)
+function [fpsdpeak, Xpsdpeak, XpsdmaximaMedian] = ssPSD(X,tmanstart,tmanend,Fs)
     
 deltat = 1/(Fs*1e-3);%ms
 

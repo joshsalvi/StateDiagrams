@@ -1,14 +1,14 @@
 clear all; close all;
 %%%%%%%
 
-load('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/Gentamicin/2014-08-05.01/Ear 1/Cell 8/20140805-cell8.mat');
+load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2015-07-07.01/Ear 1/Cell 1/Extracted Data.mat')
+load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2015-07-07.01/Ear 1/Cell 1/Tstartend.mat');
 fishfigs = 1;
 if fishfigs == 1
-load('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/Gentamicin/2014-08-05.01/Ear 1/Cell 8/Modality-foranalysis.mat');
+load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2015-07-07.01/Ear 1/Cell 1/Modality2sec2Hzmin.mat');
 %load('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/Gentamicin/2014-08-05.01/Ear 1/Cell 7/Modality2sec2Hzmin.mat');
 load('/Users/joshsalvi/GitHub/StateDiagrams/customcolormaps-redblue.mat');
 end
-load('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/Gentamicin/2014-08-05.01/Ear 1/Cell 8/Tstartend2sec2Hzmin.mat');
 %}
 %{
 load('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/SSOverTime/20130908-cell15-3-2d.mat');
@@ -31,7 +31,11 @@ kgrid(end+1) = max(k_rand);
 
 sizeXd = size(Xd);
 Np = sizeXd(2);
-Nt = sizeXd(3);
+if size(sizeXd)==3
+    Nt = sizeXd(3);
+else
+    Nt = 1;
+end
 
 deltat = 0.1;%ms
 Fs = 1/deltat;%kHz
@@ -45,7 +49,7 @@ maxindex = find(abs(tvec-tmax)==min(abs(tvec-tmax)));
 %Check that the local mean and std have converged
 
 %Remove the drift from each time trace
-fdrift = 0.001;%Hz
+fdrift = 0.002;%Hz
 fsmooth = 3*fdrift;
 %ws must be odd
 ws = (1/fsmooth)/deltat;
@@ -137,7 +141,7 @@ if Tstartend(1,Npulse,Ntrial) ~= Tstartend(2,Npulse,Ntrial)
 text(0.5*tmax,0.8*Xmax,{[num2str(Tstartend(1,Npulse,Ntrial)/1000,'%3.1f') '-' num2str(Tstartend(2,Npulse,Ntrial)/1000,'%3.1f') ' s']},...
     'FontSize',12,'HorizontalAlignment','center');
 end
-axis([tmin,tmax,Xmin,Xmax])
+axis([tmin,tmax,-50,50])
 text(tmax/2,0.6*Xmin,{'Local RMS' [num2str(Xmeanstd,'%4.1f') 'nm']},...
     'FontSize',12,'HorizontalAlignment','center');
 
@@ -193,7 +197,7 @@ kvec = kvec(fishvecpts);
 [rhoRMSk,prhoRMSk]=corr(amplvec,kvec,'type','Spearman');
 [rhoRMSF,prhoRMSF]=corr(amplvec,Fvec,'type','Spearman');
 %save('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 8/RMScorrelations2Hzmin.mat','rhoRMSk','prhoRMSk','rhoRMSF','prhoRMSF')
-save('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/Gentamicin/2014-08-05.01/Ear 1/Cell 8/RMScorrelations2sec2Hzmin.mat');
+save('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2015-07-07.01/Ear 1/Cell 1/RMScorrelations2sec2Hzmin.mat');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %Create grid so that data squares are centered correctly.
