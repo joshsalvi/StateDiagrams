@@ -1,8 +1,9 @@
 %Experimental data. All points files%%%%%%%%%%%%%%%%%
 %load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 7/20140805-cell7.mat');
 %load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 7/Tstartend2Hzmin.mat');
-load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2015-07-07.01/Ear 1/Cell 1/Extracted Data.mat')
-load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2015-07-07.01/Ear 1/Cell 1/Tstartend.mat');
+load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2015-07-07.01/Ear 1/Cell 1/Extracted Data-good2.mat')
+load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2015-07-07.01/Ear 1/Cell 1/Tstartend_dipstat.mat');
+close all;
 
 %Operating points in ascending order
 Fsort = sort(F_rand);
@@ -32,8 +33,8 @@ maxindex = find(abs(tvec-tmax)==min(abs(tvec-tmax)));
 
 %Remove the drift from each time trace
 fdrift = 0.001;%kHz
-fdrift = 0.002;%kHz            % CHOICE
-fsmooth = 3*fdrift;
+fdrift = 0.001;%kHz            % CHOICE
+fsmooth = 1*fdrift;
 %ws must be odd
 ws = (1/fsmooth)/deltat;
 if rem(floor(ws),2) == 1 %odd
@@ -42,6 +43,14 @@ else %even
     ws = floor(ws)+1; 
 end
 
+% filter out the high frequencies
+fhigh = 0.03;
+ws2 = (1/fhigh)/deltat;
+if rem(floor(ws2),2) == 1 %odd
+    ws2 = floor(ws2);
+else %even
+    ws2 = floor(ws2)+1; 
+end
 %Find the running mean and std for a time greater than the longest period (1/fdrift)
 tss = 1.5*(1/fsmooth);
 ssws = round(tss/deltat);
@@ -104,7 +113,11 @@ Npt = (Ntrial-1)*Np+Npulse;
     
 %wsdetrend should be independent of each tt length
 wsdetrend = round(ws);
+ws2= round(ws2);
 X = Xd(ssstartpt:ssendpt,Npulse,Ntrial)- smooth(Xd(ssstartpt:ssendpt,Npulse,Ntrial),wsdetrend,'moving');
+
+% Filter out the high frequencies
+X = smooth(X,ws2,'moving');
 
 %%%%%%%%Symmetry test%%%%%%%%%%%%%
 %Xctr = median(X) sometimes => rejection symmetric bimodal distributions
@@ -123,11 +136,11 @@ Xlower = [Xlower' -Xlower']';
 %CHOICE
 length(num2str(X(10),'%10.100g')); %Number of significant digits in data
 % CHOICE
-alphasymm = 10^-2;
+alphasymm = 10^-3;
 eps(alphasymm); %The difference between alphasymm and the next largest double-precision number
-[hsymm,psymm,KSstat(Findex,kindex)] = kstest2(Xupper,Xlower,alphasymm);
+[hsymm,psymm(Findex,kindex),KSstat(Findex,kindex)] = kstest2(Xupper,Xlower,alphasymm);
 % CHOICE
-if psymm <= alphasymm && KSstat(Findex,kindex) >= 0.06
+if psymm(Findex,kindex) <= alphasymm && KSstat(Findex,kindex) >= 55
     hsymm = 1;
     symmtext = 'A';
 else
@@ -151,7 +164,7 @@ Kstat(Findex,kindex) = (kurtosis(X,0)-3)/SEK;
 %mean 0 and standard deviation 1
 pK = cdf('Normal',Kstat(Findex,kindex),0,1);
 % CHOICE
-if pK <= alphaK && Kstat(Findex,kindex) <= -18.0
+if pK <= alphaK && Kstat(Findex,kindex) <= -50.0
     Ktext = 'F';
     hk = 1;
 else
@@ -162,7 +175,7 @@ end
 
 %%%%%%%Unimodality test%%%%%%%%%%
 %CHOICE
-alphauni = 1e-4;
+alphauni = 5e-2;
 %Null is that there is no dip. Null is unimodality.
 %Algorithm is sort X and look for a concave/convex change
 %dip ~> 0.1 => not unimodal
@@ -172,7 +185,7 @@ Nboot = 2*10^2; %Number of bootstraped distributions needed to find puni
 [dip(Findex,kindex), puni(Findex,kindex), Xlow, Xup]=HartigansDipSignifTest(X,Nboot);
 Xlowsaved(Findex,kindex)=Xlow; Xupsaved(Findex,kindex)=Xup;
 % CHOICE
-if puni(Findex,kindex) <= alphauni && dip(Findex,kindex) >= 0.1
+if puni(Findex,kindex) <= alphauni && dip(Findex,kindex) >= 0.01
     huni = 1;
     unitext = 'M';
 else
@@ -220,7 +233,7 @@ text(0.5*Xmax,0.8*Countmax,{'Kurtosis' num2str(kurtosis(X),'%3.1f')},...
 end
 text(0.65*Xmax,0.25*Countmax,{num2str(pK,'%3.1e') num2str(Kstat(Findex,kindex),'%3.1e') Ktext},...
     'FontSize',18,'HorizontalAlignment','center','Color',[0 0.5 0]);
-text(0.65*Xmax,0.75*Countmax,{num2str(psymm,'%3.1e') num2str(KSstat(Findex,kindex),'%3.1e') symmtext},...
+text(0.65*Xmax,0.75*Countmax,{num2str(psymm(Findex,kindex),'%3.1e') num2str(KSstat(Findex,kindex),'%3.1e') symmtext},...
     'FontSize',18,'HorizontalAlignment','center','Color',[1 0.3 0]);
 text(0.6*Xmin,0.75*Countmax,{num2str(puni(Findex,kindex),'%3.1e') num2str(dip(Findex,kindex),'%3.1e') unitext},...
     'FontSize',18,'HorizontalAlignment','center','Color',[0.5 0 0]);
@@ -242,9 +255,9 @@ end
 
 end
 end
-%%%%%%%%%%%Save the modality%%%%%%%%%%%
+%%%%%%%%%%%Save the modality%%%%%%%%%%%%%%%
 %modfile = '/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 7/Modality2Hzmin.mat';
-modfile = '/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2015-07-07.01/Ear 1/Cell 1/Modality2sec2Hzmin.mat';
+modfile = '/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2015-07-07.01/Ear 1/Cell 1/Modality2sec2Hzmin-good-dipstat-filtered.mat';
 save(modfile, 'Mod','puni','dip','Kstat','KSstat');
 display('saving...');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

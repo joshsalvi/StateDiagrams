@@ -1,11 +1,12 @@
-clear all; close all;
+%clear all; 
+%close all;
 %%%%%%%
-
-load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2015-07-07.01/Ear 1/Cell 1/Extracted Data.mat')
+figure;
+load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2015-07-07.01/Ear 1/Cell 1/Extracted Data-good2.mat')
 load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2015-07-07.01/Ear 1/Cell 1/Tstartend.mat');
 fishfigs = 1;
 if fishfigs == 1
-load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2015-07-07.01/Ear 1/Cell 1/Modality2sec2Hzmin.mat');
+modfile = '/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2015-07-07.01/Ear 1/Cell 1/Modality2sec2Hzmin-good-dipstat-filtered.mat';
 %load('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/Gentamicin/2014-08-05.01/Ear 1/Cell 7/Modality2sec2Hzmin.mat');
 load('/Users/joshsalvi/GitHub/StateDiagrams/customcolormaps-redblue.mat');
 end
@@ -197,7 +198,7 @@ kvec = kvec(fishvecpts);
 [rhoRMSk,prhoRMSk]=corr(amplvec,kvec,'type','Spearman');
 [rhoRMSF,prhoRMSF]=corr(amplvec,Fvec,'type','Spearman');
 %save('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 8/RMScorrelations2Hzmin.mat','rhoRMSk','prhoRMSk','rhoRMSF','prhoRMSF')
-save('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2015-07-07.01/Ear 1/Cell 1/RMScorrelations2sec2Hzmin.mat');
+save('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2015-07-07.01/Ear 1/Cell 1/RMScorrelations2sec2Hzmin-good.mat');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %Create grid so that data squares are centered correctly.

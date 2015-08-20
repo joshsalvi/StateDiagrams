@@ -2,7 +2,7 @@ function Tfind2
 %Experimental data. All points files%%%%%%%%%%%%%%%%%
 %load('/Users/joshsalvi/Documents/Lab/Lab/Original/Paper/Raw Data/State Space Analysis/Controls/20130908-cell15-2.mat');
 %load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2014-08-05.01/Ear 1/Cell 11/20140805-cell11.mat');
-load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2015-07-07.01/Ear 1/Cell 6/Extracted Data4.mat')
+load('/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2015-07-07.01/Ear 1/Cell 1/Extracted Data-good2.mat')
 
 %Operating points in ascending order
 Fsort = sort(F_rand);
@@ -186,7 +186,7 @@ end
 end
 
 %%%%%%%%%%%Save the time limits%%%%%%%%%%%
-timefile = '/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2015-07-07.01/Ear 1/Cell 6/Tstartend4.mat';
+timefile = '/Users/joshsalvi/Documents/Lab/Lab/Clamp Data/2015-07-07.01/Ear 1/Cell 6/Tstartend4-good2.mat';
 save(timefile, 'Tstartend');
 display('saving...');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
